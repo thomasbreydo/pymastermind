@@ -5,11 +5,14 @@ from collections import Counter
 
 class Code():
 	'''ADD A DOCSTRING!'''
-	def __init__(self, *colors):
-		self.code = [c for c in colors]
+	def __init__(self, colors):
+		self.code = colors
+
+	def __str__(self):
+		return str(self.code)
 
 	def __repr__(self):
-		return str(self.code)
+		return f'mastermind.Code({self})'
 
 	def __len__(self):
 		return len(self.code)
@@ -39,3 +42,9 @@ class Code():
 			whites_count += min(count, other_not_black_counter[color])
 
 		return blacks_count, whites_count
+
+
+class Game:
+	'''ADD A DOCSTRING!'''
+	def __init__(self, ):
+		pass
