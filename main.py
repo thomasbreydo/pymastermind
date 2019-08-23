@@ -3,7 +3,7 @@
 import mastermind
 
 def main():
-	mastermind
+	pass
 
 if __name__ == '__main__':
 	main()
