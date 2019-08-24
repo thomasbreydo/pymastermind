@@ -72,7 +72,7 @@ class Game:
 			self.possibilities, self.guess = self.states.pop()
 		except IndexError:
 			pass # catch no previous state
-			
+
 	# def minmax_trim(self): 
 	# 	return new_possibilities, new_guess
 
