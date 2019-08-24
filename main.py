@@ -15,7 +15,9 @@ def main():
 			print('\n\nGoing back . . .\n\n')
 			game.back()
 			continue # skip trimming and just go back
-		game.new_guess('minmax')
+
+		game.new_guess((b, w), 'minmax')
+
 
 	print(f'\n\nYour code was {game.guess}')
 
