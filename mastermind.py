@@ -29,11 +29,11 @@ class Code():
 		self_not_black = []
 		other_not_black = []
 
-		for i in range(len(self)):
-			if self.code[i] == other.code[i]:
+		for i, peg in enumerate(self.code):
+			if peg == other.code[i]:
 				blacks_count += 1
 			else:
-				self_not_black.append(self.code[i])
+				self_not_black.append(peg)
 				other_not_black.append(other.code[i])
 		
 		self_not_black_counter = collections.Counter(self_not_black)
@@ -54,6 +54,9 @@ class Game:
 		self.combinations = [
 			Code(combo) for combo in itertools.product(colors, repeat=slots)
 		]
+		self.responses = [ # RESPONSES DONE! FINISH MIN-MAX
+			r for r in itertools.product(list(range(slots + 1)), list(range(slots + 1))) if sum(r) <= slots
+		]
 		self.possibilities = [
 			Code(combo) for combo in itertools.product(colors, repeat=slots)
 		]
@@ -73,28 +76,42 @@ class Game:
 		except IndexError:
 			pass # catch no previous state
 
-	# def minmax_trim(self): 
-	# 	return new_possibilities, new_guess
-
-	def rndm_trim(self, response):
-		new_possibilities = [
-				self.possibilities[i] 
-				for i in range(len(self.possibilities)) 
-				if self.guess.compare(self.possibilities[i]) == response
+	def trim(self, response):
+		self.possibilities = [
+				possibility 
+				for possibility in self.possibilities
+				if self.guess.compare(possibility) == response
 			]
-		new_guess = random.choice(new_possibilities)
-		return new_possibilities, new_guess
 
-	def trim(self, response, algorithm='rndm'):
-		'''
-		ADD DOCSTRING.
+	def minmax_get_score(self, guess):
+		return min([
+			sum(1 for possibility in self.possibilities if guess.compare(possibility) != r) 
+			for r in self.responses
+		])
 
-		(LONG)
-		'''
-		if algorithm == 'rndm':
-			new_possibilities, new_guess = self.rndm_trim(response)
+	def minmax_new_guess(self): 
+		best = (
+				self.combinations[0], 
+				self.minmax_get_score(self.combinations[0])
+			)
+		for guess in self.combinations[1:]:
+			best = max(
+				best, 
+				(guess, self.minmax_get_score(guess)),
+				key=lambda x: x[1], # compare the scores
+			)
 
-		if algorithm == 'minmax':
-			new_possibilities, new_guess = self.minmax_trim(response)
+		return best[0]
 
-		self.save(new_possibilities, new_guess)
+	def rndm_new_guess(self):
+		return random.choice(self.possibilities)
+
+	def new_guess(self, algorithm='rndm'):
+		if len(self.possibilities) == 1:
+			self.guess = self.possibilities[0]
+		else:
+			if algorithm == 'rndm':
+				self.guess = self.rndm_new_guess()
+
+			if algorithm == 'minmax':
+				self.guess = self.minmax_new_guess()

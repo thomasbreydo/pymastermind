@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import mastermind
+import timeit
 
 def main():
 	game = mastermind.Game()
@@ -8,9 +9,10 @@ def main():
 		print(f'\nMy guess is {game.guess}.')
 		b = int(input('How many black pegs?\n> '))
 		w = int(input('How many white pegs?\n> '))
-		game.trim((b, w), 'rndm')
+		game.trim((b, w))
+		game.new_guess('minmax')
 
-	print(f'Your code was {game.guess}')
+	print(f'\n\nYour code was {game.guess}')
 
 if __name__ == '__main__':
 	main()
