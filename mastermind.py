@@ -54,20 +54,18 @@ class Game:
 		self.combinations = [
 			Code(combo) for combo in itertools.product(colors, repeat=slots)
 		]
-		self.responses = [ # RESPONSES DONE! FINISH MIN-MAX
+		self.responses = [
 			r for r in itertools.product(list(range(slots + 1)), list(range(slots + 1))) if sum(r) <= slots
 		]
 		self.possibilities = [
 			Code(combo) for combo in itertools.product(colors, repeat=slots)
 		]
-		self.guess = Code([colors[i // 2] for i in range(slots)])
+		self.guess = Code(tuple(colors[i // 2] for i in range(slots)))
 		# LATER: PLAY W/ DIFF STARTING VALUES FOR SELF.GUESS
 		self.states = []
 
-	def save(self, possibilities, guess):
+	def save(self):
 		self.states.append((self.possibilities, self.guess))
-		self.possibilities = possibilities
-		self.guess = guess
 
 	def back(self):
 		'''Recover previous values for possibilities & guess.'''
@@ -83,13 +81,20 @@ class Game:
 				if self.guess.compare(possibility) == response
 			]
 
+	def rndm_new_guess(self, response):
+		self.save()
+		self.trim(response)
+		return random.choice(self.possibilities)
+
 	def minmax_get_score(self, guess):
 		return min([
 			sum(1 for possibility in self.possibilities if guess.compare(possibility) != r) 
 			for r in self.responses
 		])
 
-	def minmax_new_guess(self): 
+	def minmax_new_guess(self, response): 
+		self.save()
+		self.trim(response)
 		best = (
 				self.combinations[0], 
 				self.minmax_get_score(self.combinations[0])
@@ -103,15 +108,12 @@ class Game:
 
 		return best[0]
 
-	def rndm_new_guess(self):
-		return random.choice(self.possibilities)
+	def new_guess(self, response, algorithm='rndm'):
+		if algorithm == 'rndm':
+			self.guess = self.rndm_new_guess(response)
 
-	def new_guess(self, algorithm='rndm'):
+		if algorithm == 'minmax':
+			self.guess = self.minmax_new_guess(response)
+
 		if len(self.possibilities) == 1:
 			self.guess = self.possibilities[0]
-		else:
-			if algorithm == 'rndm':
-				self.guess = self.rndm_new_guess()
-
-			if algorithm == 'minmax':
-				self.guess = self.minmax_new_guess()
