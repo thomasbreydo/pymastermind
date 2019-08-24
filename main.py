@@ -5,11 +5,16 @@ import timeit
 
 def main():
 	game = mastermind.Game()
+	print('Welcome to Mastermind! Press enter to go back at any time.') # change later
 	while len(game.possibilities) > 1:
 		print(f'\nMy guess is {game.guess}.')
-		b = int(input('How many black pegs?\n> '))
-		w = int(input('How many white pegs?\n> '))
-		game.trim((b, w))
+		try:
+			b = int(input('How many black pegs?\n> '))
+			w = int(input('How many white pegs?\n> '))
+		except ValueError:
+			print('\n\nGoing back . . .\n\n')
+			game.back()
+			continue # skip trimming and just go back
 		game.new_guess('minmax')
 
 	print(f'\n\nYour code was {game.guess}')

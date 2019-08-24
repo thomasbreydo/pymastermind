@@ -90,6 +90,7 @@ class Game:
 		])
 
 	def minmax_new_guess(self): 
+		self.trim()
 		best = (
 				self.combinations[0], 
 				self.minmax_get_score(self.combinations[0])
@@ -104,9 +105,11 @@ class Game:
 		return best[0]
 
 	def rndm_new_guess(self):
+		self.trim()
 		return random.choice(self.possibilities)
 
 	def new_guess(self, algorithm='rndm'):
+		self.trim()
 		if len(self.possibilities) == 1:
 			self.guess = self.possibilities[0]
 		else:
@@ -115,3 +118,5 @@ class Game:
 
 			if algorithm == 'minmax':
 				self.guess = self.minmax_new_guess()
+
+	def trim_
