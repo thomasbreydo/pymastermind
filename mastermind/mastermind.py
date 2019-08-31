@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+'''MasterMind simulator and guesser.
+
+Code() -- class, stores MasterMind code
+Game() -- class, MasterMind in Python with a computer guesser. 
+'''
+
 import collections
 import itertools 
 import random
@@ -8,139 +14,204 @@ import pandas as pd
 
 
 class Code():
-	''''''
+    '''Store a MasterMind code.
 
-	def __init__(self, colors):
-		self.code = colors
+    ### Initialization ###
+    Required argument:
+    code -- iterable containing the MasterMind code in raw format
 
-	def __str__(self):
-		return str(self.code)
 
-	def __repr__(self):
-		return f'mastermind.Code({self})'
+    ### Methods ###
+    compare() -- Compare self to another Code object of 
+    equal length and return a tuple of (black_peg_count, 
+    white_peg_count).
 
-	def compare(self, other):
-		'''Compare self to another code of equal length and return a 
-		tuple
 
-		Examples:
-		>>> c = Code(['a', 'b', 'c', 'd'])
-		>>> c.compare(Code(['a', 'b', 'd', 'e']))
-		(2, 1)
-		'''
-		
-		blacks_count = 0
-		whites_count = 0
-		self_not_black = []
-		other_not_black = []
 
-		for i, peg in enumerate(self.code):
-			if peg == other.code[i]:
-				blacks_count += 1
-			else:
-				self_not_black.append(peg)
-				other_not_black.append(other.code[i])
-		
-		self_not_black_counter = collections.Counter(self_not_black)
-		other_not_black_counter = collections.Counter(other_not_black)
+    '''
 
-		for color, count in self_not_black_counter.items():
-			# if color missing, counter[missing_color] == 0, no KeyError
-			whites_count += min(count, other_not_black_counter[color])
+    def __init__(self, code):
+        self.code = code
 
-		return blacks_count, whites_count
+    def __str__(self):
+        return str(self.code)
+
+    def __repr__(self):
+        return f'mastermind.Code({self})'
+
+    def compare(self, other):
+        '''Compare self to another Code object of equal length and return 
+        a tuple of (black_peg_count, white_peg_count)
+        
+        -- Examples --
+        >>> c = Code(['a', 'b', 'c', 'd'])
+        >>> c.compare(Code(['a', 'b', 'd', 'e'])) # 2 black, 1 white
+        (2, 1) 
+        '''
+        
+        blacks_count = 0
+        whites_count = 0
+        self_not_black = []
+        other_not_black = []
+
+        for i, peg in enumerate(self.code):
+            if peg == other.code[i]:
+                blacks_count += 1
+            else:
+                self_not_black.append(peg)
+                other_not_black.append(other.code[i])
+        
+        self_not_black_counter = collections.Counter(self_not_black)
+        other_not_black_counter = collections.Counter(other_not_black)
+
+        for color, count in self_not_black_counter.items():
+            # if color missing, counter[missing_color] == 0, no KeyError
+            whites_count += min(count, other_not_black_counter[color])
+
+        return blacks_count, whites_count
 
 
 class Game:
-	'''ADD A DOCSTRING!'''
+    '''MasterMind in Python with a computer guesser.
 
-	ALGORITHMS = ['random', 'minmax']
+    ### Initialization ###
+    Keyword arguments:
+    slots -- number of slots in the secret code (default 4)
+    colors -- list of available colors for the secret code (default ['a', 
+        'b', 'c', 'd', 'e', 'f'])
 
-	def __init__(self, slots=4, colors=['a', 'b', 'c', 'd', 'e', 'f']):
-		self.slots = slots
-		self.colors = colors
-		self.combinations = [
-			Code(combo) for combo in itertools.product(colors, repeat=slots)
-		]
-		self.responses = [
-			r for r in itertools.product(
-				list(range(slots + 1)),
-				list(range(slots + 1)),
-			)
-			if sum(r) <= slots
-		]
-		self.possibilities = [
-			Code(combo) for combo in itertools.product(colors, repeat=slots)
-		]
-		self.guess = Code(tuple(colors[i // 2] for i in range(slots)))
-		# LATER: PLAY W/ DIFF STARTING VALUES FOR SELF.GUESS
-		self.states = []
+    ### Variables ###
+    Class variables:
+    ALGORITHMS -- list of available new_guess() algorithms
 
-	def save(self):
-		self.states.append((self.possibilities, self.guess))
+    Instance variables:
+    self.slots -- number of slots in the secret code
+    self.colors -- list of available colors for the secret code
+    self.combinations -- list of Code objects, which contains all 
+        possible secret codes
+    self.responses -- list of all possible response tuples (also a list
+        of all possible return values of Code().compare(Code()))
+    self.possibilities -- list of all remaining possibilities for the 
+        secret code
+    self.guess -- Code object containing the current guess
+    self.states -- list of tuples containing past values of 
+        self.possibilities and self.guess
+    '''
 
-	def back(self):
-		'''Recover previous values for possibilities & guess.'''
-		try:
-			self.possibilities, self.guess = self.states.pop()
-		except IndexError:
-			pass # catch no previous state
+    ALGORITHMS = ['random', 'minmax']
 
-	def trim(self, response):
-		self.possibilities = [
-				possibility 
-				for possibility in self.possibilities
-				if self.guess.compare(possibility) == response
-			]
+    def __init__(self, slots=4, colors=['a', 'b', 'c', 'd', 'e', 'f']):
+        self.slots = slots
+        self.colors = colors
+        self.combinations = [
+            Code(combo) for combo in itertools.product(colors, repeat=slots)
+        ]
+        self.responses = [
+            r for r in itertools.product(
+                list(range(slots + 1)),
+                list(range(slots + 1)),
+            )
+            if sum(r) <= slots
+        ]
+        self.possibilities = [
+            Code(combo) for combo in itertools.product(colors, repeat=slots)
+        ]
+        self.guess = Code(tuple(colors[i // 2] for i in range(slots)))
+        # LATER: PLAY W/ DIFF STARTING VALUES FOR SELF.GUESS
+        self.states = []
 
-	def random_new_guess(self, response):
-		self.save()
-		self.trim(response)
-		return random.choice(self.possibilities)
+    def save(self):
+        self.states.append((self.possibilities, self.guess))
 
-	def minmax_get_score(self, guess):
-		return min([
-			sum(1 for possibility in self.possibilities 
-			if guess.compare(possibility) != r) 
-			for r in self.responses
-		])
+    def back(self):
+        '''Recover previous values for possibilities & guess.'''
+        try:
+            self.possibilities, self.guess = self.states.pop()
+        except IndexError:
+            pass # catch no previous state
 
-	def minmax_new_guess(self, response): 
-		self.save()
-		self.trim(response)
-		best = (
-				self.combinations[0], 
-				self.minmax_get_score(self.combinations[0])
-			)
-		for guess in self.combinations[1:]:
-			best = max(
-				best, 
-				(guess, self.minmax_get_score(guess)),
-				key=lambda x: x[1], # compare the scores
-			)
+    def trim(self, response):
+        self.possibilities = [
+                possibility 
+                for possibility in self.possibilities
+                if self.guess.compare(possibility) == response
+            ]
 
-		return best[0]
+    def random_new_guess(self, response):
+        self.save()
+        self.trim(response)
+        return random.choice(self.possibilities)
 
-	def new_guess(self, response, algorithm='random'):
-		if algorithm == 'random':
-			self.guess = self.random_new_guess(response)
+    def minmax_get_score(self, guess):
+        return min([
+            sum(1 for possibility in self.possibilities 
+            if guess.compare(possibility) != r) 
+            for r in self.responses
+        ])
 
-		if algorithm == 'minmax':
-			self.guess = self.minmax_new_guess(response)
+    def minmax_new_guess(self, response): 
+        self.save()
+        self.trim(response)
+        best = (
+                self.combinations[0], 
+                self.minmax_get_score(self.combinations[0])
+            )
+        for guess in self.combinations[1:]:
+            best = max(
+                best, 
+                (guess, self.minmax_get_score(guess)),
+                key=lambda x: x[1], # compare the scores
+            )
 
-		if len(self.possibilities) == 1:
-			self.guess = self.possibilities[0]
+        return best[0]
+
+    def new_guess(self, response, algorithm='random'):
+        if algorithm == 'random':
+            self.guess = self.random_new_guess(response)
+
+        if algorithm == 'minmax':
+            self.guess = self.minmax_new_guess(response)
+
+        if len(self.possibilities) == 1:
+            self.guess = self.possibilities[0]
+
 
 class SelfGame(Game):
-    """docstring for SelfGame"""
+    '''Game subclass--play self and return info about games played.
 
-    def play(self, gamecount=10, algorithm='rndm'):
-        '''Returns time, turns'''
+    ### Game vs. SelfGame ###
+    Similarities: 
+        - Initialization
+        - All variables and methods
+    Differences:
+        - Added play() method
+
+    ### New Method ###
+    play(gamecount, algorithm) -- play {gamecount} games using the
+        {algorithm} algorithm and return a pandas DataFrame with game info.
+    '''
+
+    def play(self, gamecount=10, algorithm='random'):
+        '''Play a specified number of MasterMind games with a specified
+        algorithm and return a pandas DataFrame with info about: guess
+        time, remaining possibilities before/after the guess.
+
+        ### Calling the method ###
+        Keyword arguments:
+        gamecount -- play this many games (default 10).
+        algorithm -- use this algorithm to find new guesses (default 
+            'random'). Possibile values stored in class variable 
+            ALGORITHMS SelfGame inherits from Game.
+
+        ### Examples ###
+        >>> # random secret code chosen for the second game
+        >>> SelfGame().play().loc['Game 2', 'Secret']
+        Code(['a', 'b', 'f', 'e']) 
+        '''
         games = []
         longest_game_len = -1
         for i in range(gamecount):
             secret = random.choice(self.combinations)
-            # info.loc[f'Game {i}', 'Secret'] = secret
             turns = []
             turn = 0
             while len(self.possibilities) > 1:
@@ -158,7 +229,7 @@ class SelfGame(Game):
                 turn += 1
             # reset 
             longest_game_len = max(turn, longest_game_len)
-            games.append(turns)
+            games.append((turns, secret))
             self.possibilities, self.guess = self.states[0] 
 
         # create the dataframe
@@ -178,8 +249,10 @@ class SelfGame(Game):
             
         # populate the dataframe
         for game_i, game in enumerate(games):
-            for turn_i, turn in enumerate(game): # game is a list of turns
-                df.loc[f'Game {game_i}', f'Turn {turn_i}'] = game[turn_i]
+            for turn_i, turn in enumerate(game[0]): # game == (turns, secret)
+                df.loc[f'Game {game_i}', f'Turn {turn_i}'] = turn
+            df.loc[f'Game {game_i}', 'Secret'] = game[1]
         df['Algorithm'] = algorithm
         
         return df
+

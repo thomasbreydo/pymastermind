@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 
 from setuptools import setup
-import os
 
 with open('README.md') as f:
-	description = f.read()
+    description = f.read()
 
 setup(
    name='mastermind',
@@ -14,5 +13,4 @@ setup(
    author_email='tbreydo@gmail.com',
    packages=['mastermind'],
    install_requires=['pandas'],
-   scripts=os.path.join('scripts', 'main.py')
 )
