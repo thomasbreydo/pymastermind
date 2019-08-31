@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-# ADD SETUP.PY https://stackoverflow.com/questions/1471994/what-is-setup-py
-
 import mastermind
 
 def main():
