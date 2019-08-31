@@ -8,7 +8,8 @@ import pandas as pd
 
 
 class Code():
-	'''ADD A DOCSTRING!'''
+	''''''
+
 	def __init__(self, colors):
 		self.code = colors
 
@@ -18,13 +19,15 @@ class Code():
 	def __repr__(self):
 		return f'mastermind.Code({self})'
 
-	def __len__(self):
-		return len(self.code)
-
 	def compare(self, other):
-		'''Compares self to another code. Returns (black, white)'''
+		'''Compare self to another code of equal length and return a 
+		tuple
 
-		# get blacks, then whites
+		Examples:
+		>>> c = Code(['a', 'b', 'c', 'd'])
+		>>> c.compare(Code(['a', 'b', 'd', 'e']))
+		(2, 1)
+		'''
 		
 		blacks_count = 0
 		whites_count = 0
