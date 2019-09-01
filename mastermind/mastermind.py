@@ -22,12 +22,8 @@ class Code():
 
 
     ### Methods ###
-    compare() -- Compare self to another Code object of 
-    equal length and return a tuple of (black_peg_count, 
-    white_peg_count).
-
-
-
+    compare(other) -- compare self to another Code object of equal length
+        and return a tuple of (black_peg_count, white_peg_count)
     '''
 
     def __init__(self, code):
@@ -41,7 +37,7 @@ class Code():
 
     def compare(self, other):
         '''Compare self to another Code object of equal length and return 
-        a tuple of (black_peg_count, white_peg_count)
+        a tuple of (black_peg_count, white_peg_count).
         
         -- Examples --
         >>> c = Code(['a', 'b', 'c', 'd'])
@@ -96,6 +92,17 @@ class Game:
     self.guess -- Code object containing the current guess
     self.states -- list of tuples containing past values of 
         self.possibilities and self.guess
+
+    ### Methods ###
+    Instance methods:
+    save() -- append (self.possibilities, self.guess) to self.states
+    back() -- reset self.possibilities, self.guess, and self.states to
+        previous values
+    trim(response) -- remove possibilities from self.possibilties that
+        don't match the response passed into trim()
+    random_new_guess(response) -- set self.guess to a random choice from
+        self.possibilities
+    minmax_get_score()
     '''
 
     ALGORITHMS = ['random', 'minmax']
@@ -131,6 +138,9 @@ class Game:
             pass # catch no previous state
 
     def trim(self, response):
+        '''Remove possibilities from self.possibilities that don't match
+        the response given.
+        '''
         self.possibilities = [
                 possibility 
                 for possibility in self.possibilities
@@ -142,7 +152,8 @@ class Game:
         self.trim(response)
         return random.choice(self.possibilities)
 
-    def minmax_get_score(self, guess):
+    def _minmax_get_score(self, guess):
+        '''Return score for a guess--used by minmax_new_guess(response).'''
         return min([
             sum(1 for possibility in self.possibilities 
             if guess.compare(possibility) != r) 
@@ -150,16 +161,17 @@ class Game:
         ])
 
     def minmax_new_guess(self, response): 
+        '''Set self.guess to highest min-max-scoring guess.'''
         self.save()
         self.trim(response)
         best = (
                 self.combinations[0], 
-                self.minmax_get_score(self.combinations[0])
+                self._minmax_get_score(self.combinations[0])
             )
         for guess in self.combinations[1:]:
             best = max(
                 best, 
-                (guess, self.minmax_get_score(guess)),
+                (guess, self._minmax_get_score(guess)),
                 key=lambda x: x[1], # compare the scores
             )
 
