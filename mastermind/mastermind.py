@@ -129,7 +129,8 @@ class Game:
                 first_guess += (colors[i // 2],)
         except: # fill empty slots with the last element in first_guess
             first_guess += (first_guess[-1],)* (slots - len(first_guess)) 
-        self.guess = Code(first_guess)
+        # 5 slots; 'a', 'b' colors; first_guess == ['a', 'a', 'b', 'b', 'b']
+        self.guess = Code(first_guess) 
         self.states = []
 
     def save(self):
