@@ -9,11 +9,11 @@ def main():
     If yes --> guess user's code.
     If no --> play alone.
     '''
-    slots = 4#int(input('How many slots? '))
-    colors_input = 'a,b,c,d'#input('What are the colors (separate with commas)? ')
+    slots = int(input('How many slots? '))
+    colors_input = input('What are the colors (separate with commas)? ')
     colors = list(map(lambda x: x.strip(), colors_input.split(',')))
-    algorithm = 'random'#input(f'Algorithm ({"/".join(mastermind.Game.ALGORITHMS)})? ')
-    alone = True#input('Self game (y/n)? ').lower().startswith('y')
+    algorithm = input(f'Algorithm ({"/".join(mastermind.Game.ALGORITHMS)})? ')
+    alone = input('Self game (y/n)? ').lower().startswith('y')
 
     if not alone:
         game = mastermind.Game(slots, colors)
