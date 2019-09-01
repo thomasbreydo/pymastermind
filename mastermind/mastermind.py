@@ -181,10 +181,11 @@ class Game:
         if algorithm == 'random':
             self.guess = self.random_new_guess(response)
 
-        if algorithm == 'minmax':
+        elif algorithm == 'minmax':
             self.guess = self.minmax_new_guess(response)
 
-        if len(self.possibilities) == 1:
+        # <=, not == to throw error if < 1, which is caught in main
+        if len(self.possibilities) <= 1: 
             self.guess = self.possibilities[0]
 
 
