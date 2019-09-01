@@ -130,7 +130,6 @@ class Game:
         except: # fill empty slots with the last element in first_guess
             first_guess += (first_guess[-1],)* (slots - len(first_guess)) 
         self.guess = Code(first_guess)
-        # LATER: PLAY W/ DIFF STARTING VALUES FOR SELF.GUESS
         self.states = []
 
     def save(self):
