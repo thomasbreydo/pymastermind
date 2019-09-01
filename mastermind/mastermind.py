@@ -123,7 +123,13 @@ class Game:
         self.possibilities = [
             Code(combo) for combo in itertools.product(colors, repeat=slots)
         ]
-        self.guess = Code(tuple(colors[i // 2] for i in range(slots)))
+        first_guess = ()
+        try:
+            for i in range(slots):
+                first_guess += (colors[i // 2],)
+        except: # fill empty slots with the last element in first_guess
+            first_guess += (first_guess[-1],)* (slots - len(first_guess)) 
+        self.guess = Code(first_guess)
         # LATER: PLAY W/ DIFF STARTING VALUES FOR SELF.GUESS
         self.states = []
 
