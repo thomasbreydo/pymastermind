@@ -101,9 +101,19 @@ class Game:
         previous values
     trim(response) -- remove possibilities from self.possibilties that
         don't match the response passed into trim()
-    random_new_guess(response) -- set self.guess to a random choice from
+    random_new_guess() -- set self.guess to a random choice from
         self.possibilities
-    minmax_get_score()
+    minmax_get_score(guess) -- return a score for a guess; used by 
+        minmax_new_guess().
+    minmax_new_guess(progress_bar) -- set self.guess to the highest 
+    min-max-scoring guess
+    new_guess(response, algorithm, progress_bar) -- do the following:
+        1. self.trim()
+        2. self.save()
+        3. if only one possibility remains in self.possibilities, set 
+            self.guess to that possibilities. 
+            a. throw error if 0 possibilities remain
+        4. run the respective algorithm for a new guess
     '''
 
     ALGORITHMS = ['random', 'minmax']
@@ -146,34 +156,39 @@ class Game:
 
     def trim(self, response):
         '''Remove possibilities from self.possibilities that don't match
-        the response given.
-        '''
+        the response given.'''
+
         self.possibilities = [
                 possibility 
                 for possibility in self.possibilities
                 if self.guess.compare(possibility) == response
             ]
 
-    def random_new_guess(self, response):
-        self.save()
-        self.trim(response)
+    def random_new_guess(self):
+        '''Set self.guess to a random choice from
+        self.possibilities.'''
+
         return random.choice(self.possibilities)
 
-    def _minmax_get_score(self, guess):
-        '''Return score for a guess--used by minmax_new_guess(response).'''
+    def minmax_get_score(self, guess):
+        '''Return the fewest number of possibilities that the guess passed 
+        into minmax_get_score() could eliminate. This takes all responses in 
+        self.response into account.'''
+
         return min([
             sum(1 for possibility in self.possibilities 
             if guess.compare(possibility) != r) 
             for r in self.responses
         ])
 
-    def minmax_new_guess(self, response, progress_bar=True): 
-        '''Set self.guess to highest min-max-scoring guess.'''
-        self.save()
-        self.trim(response)
+    def minmax_new_guess(self, progress_bar=True): 
+        '''Set self.guess to the guess from self.combinations that has the
+        highest min-max score. This score is calculated using the 
+        minmax_get_score(guess) method.'''
+
         best = (
                 self.combinations[0], 
-                self._minmax_get_score(self.combinations[0])
+                self.minmax_get_score(self.combinations[0])
             )
 
         if progress_bar:
@@ -181,7 +196,7 @@ class Game:
                                         desc='Searching for best guess'):
                 best = max(
                     best, 
-                    (guess, self._minmax_get_score(guess)),
+                    (guess, self.minmax_get_score(guess)),
                     key=lambda x: x[1], # compare the scores (found at idx 1)
                     )
 
@@ -189,23 +204,31 @@ class Game:
             for guess in self.combinations[1:]:
                 best = max(
                     best, 
-                    (guess, self._minmax_get_score(guess)),
+                    (guess, self.minmax_get_score(guess)),
                     key=lambda x: x[1], # compare the scores (found at idx 1)
                     )
-
 
         return best[0]
 
     def new_guess(self, response, algorithm='random', progress_bar=True):
-        if algorithm == 'random':
-            self.guess = self.random_new_guess(response)
+        '''Do the following:
+            1. self.trim()
+            2. self.save()
+            3. if only one possibility remains in self.possibilities, set 
+                self.guess to that possibilities. 
+                a. throw error if 0 possibilities remain
+            4. run the respective algorithm for a new guess
+        '''
 
-        elif algorithm == 'minmax':
-            self.guess = self.minmax_new_guess(response, progress_bar)
-
-        # <=, not == to throw error if < 1, which is caught in main
+        self.save()
+        self.trim(response)
+        # <=, not == to throw error if < 1 i.e. 0, which is caught in main
         if len(self.possibilities) <= 1: 
             self.guess = self.possibilities[0]
+        elif algorithm == 'random':
+            self.guess = self.random_new_guess()
+        elif algorithm == 'minmax':
+            self.guess = self.minmax_new_guess(progress_bar)
 
 
 class SelfGame(Game):
@@ -240,6 +263,7 @@ class SelfGame(Game):
         >>> SelfGame().play().loc['Game 2', 'Secret']
         Code(['a', 'b', 'f', 'e']) 
         '''
+
         games = []
         longest_game_len = -1
         for i in range(gamecount):
@@ -250,7 +274,8 @@ class SelfGame(Game):
                 start_guess = self.guess
                 start_pos = self.possibilities[:]
                 start_time = datetime.datetime.now()
-                self.new_guess(secret.compare(start_guess), algorithm, progress_bar=False)
+                self.new_guess(secret.compare(start_guess), algorithm, 
+                    progress_bar=False)
                 end_time = datetime.datetime.now()
                 end_pos = self.possibilities[:]
                 turns.append([

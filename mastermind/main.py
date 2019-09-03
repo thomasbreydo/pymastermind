@@ -77,9 +77,9 @@ def main():
                 game.back()
                 turn -= 1
                 continue # skip trimming and just go back
-            try:
-                if progress_bar:
+            if progress_bar:
                     print() # extra whitespace before progress bar
+            try:
                 game.new_guess((b, w), algorithm, progress_bar)
             except: # not enough possibilities
                 print("\n\nSomething went wrong. Check your inputs. I'm "
