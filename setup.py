@@ -13,6 +13,6 @@ setup(
    author='Thomas Breydo',
    author_email='tbreydo@gmail.com',
    packages=['mastermind'],
-   install_requires=['pandas', 'tqdm.auto'],
+   install_requires=['pandas', 'tqdm'],
    include_package_data=True,
 )
