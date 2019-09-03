@@ -249,7 +249,7 @@ class SelfGame(Game):
                 start_guess = self.guess
                 start_pos = self.possibilities[:]
                 start_time = datetime.datetime.now()
-                self.new_guess(secret.compare(start_guess), algorithm)
+                self.new_guess(secret.compare(start_guess), algorithm, progress_bar=False)
                 end_time = datetime.datetime.now()
                 end_pos = self.possibilities[:]
                 turns.append([

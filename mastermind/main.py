@@ -4,6 +4,8 @@ import mastermind
 
 ALL_ALLGORITHMS = mastermind.Game.ALGORITHMS
 
+DIVIDER = '\n\n----------------\n\n'
+
 def main():
     '''
     Ask if game should play itself.
@@ -12,61 +14,10 @@ def main():
     If no --> play alone.
     '''
 
-    print(
-'''
-Welcome to MasterMind! 
-
-
--- Rules -- 
-
-(Modified from https://en.wikipedia.org/wiki/Mastermind_(board_game))
-
-I'm codebreaker, trying to guess your pattern, in both order and color. After 
-each of my guesses, you'll be prompted to give my guess a number of black pegs  
-and white pegs. 
-
-The number of black pegs you give my guess represents the number of code pegs 
-from my guess are correct in both color and position. 
-
-The number of white pegs you give my guess represents the number of code pegs 
-that are correct in color, but in the wrong position. 
-
-If there are duplicate colors in my guess, they can't all be awarded a 
-black/white peg unless they correspond to the same number of duplicate colors 
-in your secret code. For example, if your hidden code is ('a', 'a', 'b', 'b') 
-and I guess ('a', 'a', 'a', 'b'), you should respond with:
-    * a black peg for the first 'a'
-    * another black peg for the second 'a'
-    * nothing for the third 'a', since there isn't a third 'a' in your code
-    * another black peg for the last 'b' 
-    * nothing to indicate your code has a second black
-
-
--- Copyright Info --
-
-MIT License
-
-Copyright (c) 2019 Thomas
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-''')
+    with open(os.path.join('..', 'welcome.txt')) as f:
+        print(DIVIDER)
+        print(f.read())
+        print(DIVIDER)
 
     while True:
         try:
@@ -108,16 +59,11 @@ SOFTWARE.
 
         game = mastermind.Game(slots, colors)
         turn = 0
-        print(
-'''
-
-----------------
-
-You've asked me guess your secret code. After each guess, I'll prompt you to
-enter how many black and white pegs my guess got.
-
-Press <enter> or <return> at any time to go back.
-''')
+        print(DIVIDER)
+        print("You've asked me guess your secret code. After each guess, "
+              "I'll prompt you to enter how many black and white pegs my "
+              "guess got.\n")
+        print('Press <enter> or <return> at any time to go back.')
         
         # main loop
         while len(game.possibilities) > 1:
@@ -143,8 +89,10 @@ Press <enter> or <return> at any time to go back.
                 game.back()
                 continue
 
-        print(f'\n\nDone! Your code was {game.guess}, and I guessed it in '
-              f'{turn} moves.\n')
+        print(DIVIDER)
+        print(f'Done! Your code was {game.guess}, and I guessed it in {turn} '
+               'moves.')
+        print(DIVIDER)
 
     else:
         gamecount = int(input('How many games? '))
@@ -152,6 +100,7 @@ Press <enter> or <return> at any time to go back.
         df = self_game.play(gamecount, algorithm)
 
         # dislpay statistics
+        print(DIVIDER)
         print('\n\n-- General --')
         print(f'\nTotal games played:\n{len(df.index)}')
         print(f'\nAlgorithm used:\n{df["Algorithm"].iloc[0]}')
