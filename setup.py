@@ -9,6 +9,7 @@ setup(
    name='mastermind',
    version='1.0',
    description=description,
+   url='https://github.com/thomasbreydo/mastermind',
    author='Thomas Breydo',
    author_email='tbreydo@gmail.com',
    packages=['mastermind'],

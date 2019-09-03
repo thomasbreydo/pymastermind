@@ -177,7 +177,8 @@ class Game:
             )
 
         if progress_bar:
-            for guess in tqdm.auto.tqdm(self.combinations[1:]):
+            for guess in tqdm.auto.tqdm(self.combinations[1:], 
+                                        desc='Searching for best guess'):
                 best = max(
                     best, 
                     (guess, self._minmax_get_score(guess)),

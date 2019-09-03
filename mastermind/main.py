@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import mastermind
+import os
 
 ALL_ALLGORITHMS = mastermind.Game.ALGORITHMS
 
