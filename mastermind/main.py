@@ -94,6 +94,18 @@ SOFTWARE.
             break
 
     if not alone:
+        if algorithm == 'minmax': # Only for algorithms that support p-bars!
+            while True:
+                pbar_input = input('Progress bars (y/n)? ').lower()
+                if pbar_input == 'y':
+                    progress_bar = True
+                    break
+                elif pbar_input == 'n':
+                    progress_bar = False
+                    break
+        else: # p-bar is not supported for chosen algorithm
+            progress_bar = False
+
         game = mastermind.Game(slots, colors)
         turn = 0
         print(
@@ -120,17 +132,19 @@ Press <enter> or <return> at any time to go back.
                 turn -= 1
                 continue # skip trimming and just go back
             try:
-                game.new_guess((b, w), algorithm)
+                if progress_bar:
+                    print() # extra whitespace before progress bar
+                game.new_guess((b, w), algorithm, progress_bar)
             except: # not enough possibilities
-                print("\n\nOne of your inputs was wrong. I'm going back one "
-                      "move. To go back further, press <enter> or <return> "
-                      "at any time.\n")
+                print("\n\nSomething went wrong. Check your inputs. I'm "
+                      "going back one move. To go back further, press <enter> "
+                      "or <return> at any time.\n")
                 turn -= 1
                 game.back()
                 continue
 
         print(f'\n\nDone! Your code was {game.guess}, and I guessed it in '
-              f'{turn} moves.')
+              f'{turn} moves.\n')
 
     else:
         gamecount = int(input('How many games? '))

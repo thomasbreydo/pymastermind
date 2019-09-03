@@ -11,6 +11,7 @@ import itertools
 import random
 import datetime
 import pandas as pd
+import tqdm.auto
 
 
 class Code():
@@ -166,7 +167,7 @@ class Game:
             for r in self.responses
         ])
 
-    def minmax_new_guess(self, response): 
+    def minmax_new_guess(self, response, progress_bar=True): 
         '''Set self.guess to highest min-max-scoring guess.'''
         self.save()
         self.trim(response)
@@ -174,21 +175,32 @@ class Game:
                 self.combinations[0], 
                 self._minmax_get_score(self.combinations[0])
             )
-        for guess in self.combinations[1:]:
-            best = max(
-                best, 
-                (guess, self._minmax_get_score(guess)),
-                key=lambda x: x[1], # compare the scores
-            )
+
+        if progress_bar:
+            for guess in tqdm.auto.tqdm(self.combinations[1:]):
+                best = max(
+                    best, 
+                    (guess, self._minmax_get_score(guess)),
+                    key=lambda x: x[1], # compare the scores (found at idx 1)
+                    )
+
+        else: # no progress bar, so no tqdm
+            for guess in self.combinations[1:]:
+                best = max(
+                    best, 
+                    (guess, self._minmax_get_score(guess)),
+                    key=lambda x: x[1], # compare the scores (found at idx 1)
+                    )
+
 
         return best[0]
 
-    def new_guess(self, response, algorithm='random'):
+    def new_guess(self, response, algorithm='random', progress_bar=True):
         if algorithm == 'random':
             self.guess = self.random_new_guess(response)
 
         elif algorithm == 'minmax':
-            self.guess = self.minmax_new_guess(response)
+            self.guess = self.minmax_new_guess(response, progress_bar)
 
         # <=, not == to throw error if < 1, which is caught in main
         if len(self.possibilities) <= 1: 
