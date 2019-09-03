@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import mastermind
-import os
 
 ALL_ALLGORITHMS = mastermind.Game.ALGORITHMS
 
@@ -15,7 +14,7 @@ def main():
     If no --> play alone.
     '''
 
-    with open(os.path.join('..', 'welcome.txt')) as f:
+    with open('welcome.txt') as f:
         print(DIVIDER)
         print(f.read())
         print(DIVIDER)
@@ -35,7 +34,7 @@ def main():
         if algorithm in ALL_ALLGORITHMS:
             break
         else:
-            print(f'The "{algorithm}"" algorithm is currently unsupported')
+            print(f'The "{algorithm} algorithm is currently unsupported')
     while True:
         alone_input = input('Self game (y/n)? ').lower()
         if alone_input == 'y':
