@@ -14,4 +14,5 @@ setup(
    author_email='tbreydo@gmail.com',
    packages=['mastermind'],
    install_requires=['pandas', 'tqdm.auto'],
+   include_package_data=True,
 )
