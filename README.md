@@ -20,18 +20,18 @@ pip3 install pymastermind
 ### Play
 Play a game against your computer, or have your computer play itself, by running ```pymastermind.main()``` and following text-based instructions.
 ```python3
-import pymastermind as mm
+import pymastermind as pmm
 
-mm.main()
+pmm.main()
 ```
 ### Using Definitions
 Several useful classes are defined in the **pymastermind** module
 ### Code objects
 Code objects are list instances designed to store a MasterMind codes. You can compare two codes by using the ```.compare()``` method. [_What's comparing?_](https://en.wikipedia.org/wiki/Mastermind_(board_game)#Gameplay_and_rules)
 ```python3
->>> import pymastermind as mm
->>> secret_code = mm.Code(['a', 'b', 'c', 'd'])
->>> guess = mm.Code(['b', 'c', 'j', 'd'])
+>>> import pymastermind as pmm
+>>> secret_code = pmm.Code(['a', 'b', 'c', 'd'])
+>>> guess = pmm.Code(['b', 'c', 'j', 'd'])
 >>> len(secret_code) == len(guess)
 True
 >>> secret_code.compare(guess)
