@@ -25,8 +25,8 @@ import pymastermind as pmm
 pmm.main()
 ```
 ### Using Definitions
-Several useful classes are defined in the **pymastermind** module
-### Code objects
+Several useful classes are defined in the **pymastermind** module.
+#### Code
 Code objects are list instances designed to store a MasterMind codes. You can compare two codes by using the ```.compare()``` method. [_What's comparing?_](https://en.wikipedia.org/wiki/Mastermind_(board_game)#Gameplay_and_rules)
 ```python3
 >>> import pymastermind as pmm
@@ -38,5 +38,22 @@ True
 (1, 2)
 ```
 _Note: code objects must be of the same length to comapre._
+#### Game
+Game objects are used to immitate gameplay.
+```python3
+>>> import pymastermind as pmm
+>>> my_game = pmm.Game() # default: slots == 4, colors == ['a', 'b', 'c', 'd', 'e', 'f']
+>>> secret_code = pmm.Code(['e', 'a', 'f', 'f'])
+>>> my_game.guess # always the same for given setup; see Wikipedia article
+['a', 'a', 'b', 'b']
+>>> blacks_and_whites = secret_code.compare(my_game.guess)
+>>> blacks_and_whites
+(1, 0)
+>>> my_game.new_guess(response, algorithm='minmax')
+>>> my_game.guess
+[] # CONTINUE FROM HERE
+>>> my_game.back()
+```
+##### _Playing & Updating the Game_
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
