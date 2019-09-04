@@ -7,7 +7,7 @@ with open('README.md') as f:
 
 setup(
    name='mastermind',
-   version='1',
+   version='0.9',
    author='Thomas Breydo',
    author_email='tbreydo@gmail.com',
    url='https://github.com/thomasbreydo/mastermind',

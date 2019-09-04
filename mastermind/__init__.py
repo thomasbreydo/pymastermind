@@ -15,7 +15,7 @@ import pandas as pd
 import tqdm.auto
 
 ALGORITHMS = ['random', 'minmax']
-DIVIDER = '\n\n----------------\n\n' # for main()
+DIVIDER = '\n\n----------------\n\n'
 WELCOME_FILE_PATH = os.path.join(
             os.path.dirname(__file__),
             'welcome.txt'
