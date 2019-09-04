@@ -51,7 +51,7 @@ Game objects are used to immitate gameplay.
 (1, 0)
 >>> my_game.new_guess(response, algorithm='minmax')
 >>> my_game.guess
-[] # CONTINUE FROM HERE
+['a', 'c', 'c', 'd'] # CONTINUE FROM HERE
 >>> my_game.back()
 ```
 Read the documentation for an in-depth look at all the attributes and methods of a ```pymastermind.Game```.
