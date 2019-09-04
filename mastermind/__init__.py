@@ -6,6 +6,7 @@ Code() -- class, stores MasterMind code
 Game() -- class, MasterMind in Python with a computer guesser. 
 '''
 
+import os
 import collections
 import itertools 
 import random
@@ -15,6 +16,10 @@ import tqdm.auto
 
 ALGORITHMS = ['random', 'minmax']
 DIVIDER = '\n\n----------------\n\n' # for main()
+WELCOME_FILE_PATH = os.path.join(
+            os.path.dirname(__file__),
+            'welcome.txt'
+        )
 
 
 class Code():
@@ -325,7 +330,7 @@ def main():
     If no --> play alone.
     '''
 
-    with open('welcome.txt') as f:
+    with open(WELCOME_FILE_PATH) as f:
         print(DIVIDER)
         print(f.read())
         print(DIVIDER)
