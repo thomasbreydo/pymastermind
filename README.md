@@ -54,6 +54,6 @@ Game objects are used to immitate gameplay.
 [] # CONTINUE FROM HERE
 >>> my_game.back()
 ```
-##### _Playing & Updating the Game_
+Read the documentation for an in-depth look at all the attributes and methods of a ```pymastermind.Game```.
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
