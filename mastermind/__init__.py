@@ -22,7 +22,7 @@ WELCOME_FILE_PATH = os.path.join(
         )
 
 
-class Code():
+class Code(list):
     '''Store a MasterMind code.
 
     ### Initialization ###
@@ -34,15 +34,6 @@ class Code():
     compare(other) -- compare self to another Code object of equal length
         and return a tuple of (black_peg_count, white_peg_count)
     '''
-
-    def __init__(self, code):
-        self.code = code
-
-    def __str__(self):
-        return str(self.code)
-
-    def __repr__(self):
-        return f'mastermind.Code({self})'
 
     def compare(self, other):
         '''Compare self to another Code object of equal length and return 
@@ -59,12 +50,12 @@ class Code():
         self_not_black = []
         other_not_black = []
 
-        for i, peg in enumerate(self.code):
-            if peg == other.code[i]:
+        for i, peg in enumerate(self):
+            if peg == other[i]:
                 blacks_count += 1
             else:
                 self_not_black.append(peg)
-                other_not_black.append(other.code[i])
+                other_not_black.append(other[i])
         
         self_not_black_counter = collections.Counter(self_not_black)
         other_not_black_counter = collections.Counter(other_not_black)
@@ -155,10 +146,7 @@ class Game:
 
     def back(self):
         '''Recover previous values for possibilities & guess.'''
-        try:
-            self.possibilities, self.guess = self.states.pop()
-        except IndexError:
-            pass # catch no previous state
+        self.possibilities, self.guess = self.states.pop()
 
     def trim(self, response):
         '''Remove possibilities from self.possibilities that don't match
@@ -314,9 +302,9 @@ class SelfGame(Game):
             
         # populate the dataframe
         for game_i, game in enumerate(games):
+            print(game)
             for turn_i, turn in enumerate(game[0]): # game == (turns, secret)
                 df.loc[f'Game {game_i}', f'Turn {turn_i}'] = turn
-            df.loc[f'Game {game_i}', 'Secret'] = game[1]
         df['Algorithm'] = algorithm
         
         return df
@@ -383,31 +371,37 @@ def main():
         
         # main loop
         while len(game.possibilities) > 1:
-            turn += 1
             print(f'\nMy guess is {game.guess}.')
             try:
                 b = int(input('How many black pegs? '))
                 w = int(input('How many white pegs? '))
             except ValueError: # non-int input, treated as <return/enter>
-                print('\n\nGoing back . . .\n')
-                game.back()
-                turn -= 1
+                try:
+                    game.back()
+                except IndexError: # catch error when no previous state
+                    print("\n\nYou can't go back farther.\n")
+                else: # no error
+                    print('\n\nGoing back . . .\n')
+                    turn -= 1
                 continue # skip trimming and just go back
             if progress_bar:
                     print() # extra whitespace before progress bar
             try:
                 game.new_guess((b, w), algorithm, progress_bar)
             except: # not enough possibilities
-                print("\n\nSomething went wrong. Check your inputs. I'm "
-                      "going back one move. To go back further, press <enter> "
-                      "or <return> at any time.\n")
-                turn -= 1
-                game.back()
+                print("\n\nSomething went wrong. Check your inputs. I'll try "
+                      "to go back one move. To go back further, press "
+                      "<enter> or <return> at any time.\n")
+                try:
+                    game.back()
+                except IndexError:
+                    pass
                 continue
+            turn += 1
 
         print(DIVIDER)
-        print(f'Done! Your code was {game.guess}, and I guessed it in {turn} '
-               'moves.')
+        print(f'Done! Your code was {game.guess}, and I got it after {turn} '
+             f"guess{'es' if turn != 1 else ''}.")
         print(DIVIDER)
 
     else:
