@@ -10,7 +10,7 @@ pip install pymastermind
 ### Requirements
 **pymastermind** requires the following libraries:
 - [pandas](https://github.com/pandas-dev/pandas), used by the _SelfGame_ object
-- [tqdm](https://github.com/tqdm/tqdm), used to display progress bars when finding next guess. _Note: only some algorithms support progress bars. See "WHEREVER I DISCUSS ALGORITHMS"_
+- [tqdm](https://github.com/tqdm/tqdm), used to display progress bars when finding next guess. _Note: only some algorithms support progress bars. See "Algorithms" below_
 
 ## Example Usage
 ### Play
@@ -51,7 +51,7 @@ Game objects are used to immitate gameplay.
 >>> my_game.guess
 ['a', 'a', 'b', 'b']
 ```
-Read the [documentation] for an in-depth look at all the attributes and methods of a ```pymastermind.Game```.
+Read the [documentation]() for an in-depth look at all the attributes and methods of a ```pymastermind.Game```.
 ##### Algorithms
 A new guess can be generated using several different algorithms. Currently, **pymastermind** has two algorithms implemented:
 - _random (default algorithm)_
