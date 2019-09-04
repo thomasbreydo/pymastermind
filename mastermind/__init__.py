@@ -302,7 +302,6 @@ class SelfGame(Game):
             
         # populate the dataframe
         for game_i, game in enumerate(games):
-            print(game)
             for turn_i, turn in enumerate(game[0]): # game == (turns, secret)
                 df.loc[f'Game {game_i}', f'Turn {turn_i}'] = turn
         df['Algorithm'] = algorithm
@@ -411,12 +410,12 @@ def main():
 
         # dislpay statistics
         print(DIVIDER)
-        print('\n\n-- General --')
+        print('-- General --')
         print(f'\nTotal games played:\n{len(df.index)}')
         print(f'\nAlgorithm used:\n{df["Algorithm"].iloc[0]}')
         print(f'\nAverage number of turns per game:\
 {df.notna().sum(axis=1).mean() / 3}')
-        for turn in df.columns.levels[0].drop(['Algorithm', 'Secret']):
+        for turn in df.columns.levels[0].drop(['Algorithm']):
             turndf = df[turn]
             eliminated = (turndf["Start Possibilities"] 
                         - turndf["End Possibilities"])
