@@ -7,7 +7,7 @@ The source code for **mastermind** is hosted here, at https://github.com/thomasb
 pip install mastermind
 ```
 ```zsh
-# use the pip3 command if you need to use the python3 command to start Python 3.X
+# or, use the pip3 command if you need to use the python3 command to start Python 3.X
 pip3 install mastermind
 ```
 ### Requirements
@@ -15,6 +15,10 @@ pip3 install mastermind
 - [pandas](https://github.com/pandas-dev/pandas), used by the _SelfGame_ object
 - [tqdm](https://github.com/tqdm/tqdm), used to display progress bars when finding next guess. _Note: only some algorithms support progress bars. See "WHEREVER I DISCUSS ALGORITHMS"_
 ## Example Usage
+### Play
+Play a game against your computer, or have your computer play itself, by running ```mastermind.main()``` and following printed instructions.
+<iframe src="https://giphy.com/embed/dZcPjQDsogVXeovvrr" width="480" height="242" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/dZcPjQDsogVXeovvrr">via GIPHY</a></p>
+
 ### Code objects
 Code objects are list instances designed to store a MasterMind codes. You can compare two codes by using the ```.compare()``` method. [_What's comparing?_](https://en.wikipedia.org/wiki/Mastermind_(board_game)#Gameplay_and_rules)
 ```python3
