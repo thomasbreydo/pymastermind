@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
 from setuptools import setup, find_packages
+import os
 
-with open('README.md') as f:
+with open(os.path.join('docs', 'README.md')) as f:
     long_description = f.read()
 
 setup(
    name='pymastermind',
-   version='1.0',
+   version='1.1',
    author='Thomas Breydo',
    author_email='tbreydo@gmail.com',
    url='https://github.com/thomasbreydo/pymastermind',
