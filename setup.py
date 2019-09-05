@@ -15,6 +15,7 @@ setup(
                 'v1.tar.gz',
    description='A Python package for simulation of the MasterMind game.',
    long_description=long_description,
+   long_description_content_type='text/markdown',
    keywords=['GAME', 'MASTER', 'MIND', 'STRATEGY', 'BOARD', 'CODE'],
    classifiers=[
       'Development Status :: 5 - Production/Stable',
