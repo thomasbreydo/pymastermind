@@ -9,6 +9,7 @@ pip install pymastermind
 ```
 ### Requirements
 **pymastermind** requires the following libraries:
+
 - [pandas](https://github.com/pandas-dev/pandas), used by the _SelfGame_ object
 - [tqdm](https://github.com/tqdm/tqdm), used to display progress bars when finding next guess. _Note: only some algorithms support progress bars. See "Algorithms" below_
 
@@ -78,6 +79,7 @@ End Possibilities                           4
 Name: Game 3, dtype: object
 ```
 ## To-Do
+
 - Add a .rst docs file for read the docs support
 
 ## License
