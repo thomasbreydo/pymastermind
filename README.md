@@ -77,5 +77,8 @@ Start Possibilities                        23
 End Possibilities                           4
 Name: Game 3, dtype: object
 ```
+## To-Do
+- Add a .rst docs file for read the docs support
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
