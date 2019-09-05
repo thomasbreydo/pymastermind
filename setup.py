@@ -11,6 +11,8 @@ setup(
    author='Thomas Breydo',
    author_email='tbreydo@gmail.com',
    url='https://github.com/thomasbreydo/pymastermind',
+   download_url='https://github.com/thomasbreydo/pymastermind/archive/' \
+                'v1.tar.gz',
    description='A Python package for simulation of the MasterMind game.',
    long_description=long_description,
    keywords=['GAME', 'MASTER', 'MIND', 'STRATEGY', 'BOARD', 'CODE'],
