@@ -8,12 +8,12 @@ with open(os.path.join('docs', 'README.md')) as f:
 
 setup(
    name='pymastermind',
-   version='1.1',
+   version='1.2',
    author='Thomas Breydo',
    author_email='tbreydo@gmail.com',
    url='https://github.com/thomasbreydo/pymastermind',
    download_url='https://github.com/thomasbreydo/pymastermind/archive/' \
-                'v1.1.tar.gz',
+                'v1.2.tar.gz',
    description='A Python package designed to play, develop strategies/' \
                'algorithms, and implement the classic MasterMind board game.',
    long_description=long_description,
