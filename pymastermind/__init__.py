@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 
-'''MasterMind simulator and guesser.
-
-Code() -- class, stores MasterMind code
-Game() -- class, MasterMind in Python with a computer guesser. 
-'''
+'''MasterMind simulator and guesser.'''
 
 import os
 import collections
