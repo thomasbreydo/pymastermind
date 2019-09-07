@@ -13,7 +13,7 @@ setup(
    author_email='tbreydo@gmail.com',
    url='https://github.com/thomasbreydo/pymastermind',
    download_url='https://github.com/thomasbreydo/pymastermind/archive/' \
-                'v1.tar.gz',
+                'v1.1.tar.gz',
    description='A Python package designed to play, develop strategies/' \
                'algorithms, and implement the classic MasterMind board game.',
    long_description=long_description,
