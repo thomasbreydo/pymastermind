@@ -419,7 +419,7 @@ def main():
             print('--', turn, '--')
             print(f'\nAverage time:\n{turndf["Time"].mean()}')
             print(f'\nAverage eliminated:\n{eliminated.mean()}')
-            print(f'\nAverage percent eliminated:\
+            print(f'\nAverage percent eliminated\n:\
 {100 * (eliminated / turndf["Start Possibilities"]).mean():.4}%')
 
 if __name__ == '__main__':
