@@ -3,7 +3,7 @@
 A Python package designed to **play**, **develop** strategies/algorithms, and **implement** the classic [MasterMind](https://en.wikipedia.org/wiki/Mastermind_(board_game)) board game. It even includes a functioning, text-based implementation of MasterMind!
 
 ## Installation
-The source code for **pymastermind** is hosted on [GitHub](https://github.com/thomasbreydo/pymastermind). You can install matermind through PyPI, with pip:
+The source code for **pymastermind** is hosted on [GitHub](https://github.com/thomasbreydo/pymastermind). You can install mastermind through PyPI, with pip:
 ```zsh
 pip install pymastermind
 ```
